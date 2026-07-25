@@ -1,0 +1,123 @@
+{
+  "name": "guardia",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "edef80fa-03e9-497a-8320-467f14255a96",
+      "name": "When chat message received",
+      "webhookId": "66e69336-504a-48f4-9c20-92569a3e7fd3"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Sos un asistente que responde preguntas sobre un sistema de ambulancias \nconsultando una base Postgres. Las tablas disponibles son:\n\n- personal (id_personal, dni_personal, nombre, apellido, id_rol)\n- rol (id_rol, nombre_rol, descripcion)\n- guardia (id_guardia, id_personal, fecha_inicio, fecha_fin)\n- ambulancia (id_ambulancia, patente_ambulancia, num_unidad, id_tipo, id_estado)\n- tipo (id_tipo, nombre)\n- estado (id_estado, nombre)\n- asignacion (id_asignacion, id_guardia, id_ambulancia, id_chofer, id_enfermero, estado)\n\nCuando te pregunten algo, generá y ejecutá la consulta SQL correspondiente \nusando la tool de Postgres, y respondé en lenguaje natural y claro."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "53d33e3a-64c7-46d1-a7dd-0351cb470d54",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        80,
+        208
+      ],
+      "id": "7860bee4-12fe-494d-9fdd-8d9273626fed",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "9nP8zt8kKQA8A0jm",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "{{ $fromAI(\"query\", \"La consulta SQL en Postgres a ejecutar según la pregunta del usuario\") }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        368,
+        208
+      ],
+      "id": "78908aff-2c60-4efa-ae60-1a42b1f8fc9f",
+      "name": "GET postgres",
+      "credentials": {
+        "postgres": {
+          "id": "HUEhT8krVRkIZOjo",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET postgres": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "dcd5c7ca-a138-4529-ac92-12515a51fb6c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1c2f27d4b7fe18d6d0a3d5b16e1108595e3efc3ae25885ad66302f3330131f64"
+  },
+  "id": "jORXZSguEkiw9Zvd",
+  "tags": []
+}
