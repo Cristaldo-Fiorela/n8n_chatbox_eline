@@ -60,8 +60,8 @@ El script completo de creación de tablas y datos de prueba está en [`db.sql`](
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/eline.git
-cd eline
+git clone https://github.com/Cristaldo-Fiorela/n8n_chatbox_eline.git
+cd n8n_chatbox_eline
 ```
 
 ### 2. Levantar los contenedores
@@ -116,9 +116,14 @@ POSTGRES_DB=tp_final
 
 ## Capturas
 
-![Chat funcionando](./capturas/chat1.png)
-![Chat funcionando](./capturas/chat2.png)
-![Workflow en n8n](./capturas/workflow.png)
+<div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+       <img src="./capturas/chat1.png" alt="Chat funcionando" style="width:48%; max-width:320px; height:auto;">
+       <img src="./capturas/chat2.png" alt="Chat funcionando" style="width:48%; max-width:320px; height:auto;">
+</div>
+
+<div style="text-align:center; margin-top:8px;">
+       <img src="./capturas/workflow.png" alt="Workflow en n8n" style="width:60%; max-width:600px; height:auto;">
+</div>
 
 ## Stack tecnológico
 
